@@ -36,56 +36,132 @@
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-3xl">
+<body class="bg-gray-50 min-h-screen p-4">
+    <div class="w-full max-w-3xl mx-auto">
         <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Weekly Report Email Generator</h1>
-            <p class="text-gray-600">Select a date below to generate your weekly report email</p>
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Email Generator</h1>
+            <p class="text-gray-600">Choose which generator to use below</p>
+            <div class="mt-6 flex justify-center">
+                <select id="generatorSelector" class="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    <option value="weekly">Weekly Report Email Generator</option>
+                    <option value="pullback">Pull Back Request Email Generator</option>
+                </select>
+            </div>
         </div>
         
-        <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-            <div class="mb-6">
-                <label for="reportDate" class="block text-sm font-medium text-gray-700 mb-2">Select Start Date</label>
-                <div class="relative">
-                    <input type="date" id="reportDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+        <div id="weeklyReportSection">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Weekly Report Email Generator</h1>
+                <p class="text-gray-600">Select a date below to generate your weekly report email</p>
+            </div>
+            
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="mb-6">
+                    <label for="reportDate" class="block text-sm font-medium text-gray-700 mb-2">Select Start Date</label>
+                    <div class="relative">
+                        <input type="date" id="reportDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Recipients</label>
+                    <input type="text" id="recipientNames" placeholder="e.g., May/Rin" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                
+                <div class="flex justify-end">
+                    <button id="generateBtn" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Generate Email
+                    </button>
                 </div>
             </div>
             
-            <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Recipients</label>
-                <input type="text" id="recipientNames" placeholder="e.g., May/Rin" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            </div>
-            
-            <div class="flex justify-end">
-                <button id="generateBtn" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                    Generate Email
-                </button>
+            <div id="emailOutput" class="hidden bg-white email-preview rounded-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Preview your email</h2>
+                
+                <div class="p-4 border border-gray-200 rounded mb-6 bg-gray-50">
+                    <p class="font-medium mb-2 text-gray-700">To: <span id="toField"></span></p>
+                    <p class="font-medium text-gray-700">Subject: Weekly Report <span class="date-display" id="subjectDates"></span></p>
+                </div>
+                
+                <div class="prose max-w-none">
+                    <p id="greetingLine">Hello,</p>
+                    
+                    <p>Attached is my weekly report for <span class="date-display" id="reportDates"></span>.</p>
+                    
+                    <p>Please let me know if you have any questions or need additional information.</p>
+                    
+                    <p>Best regards,</p>
+                    <p><span id="userName">[Your Name]</span></p>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button id="copyBtn" class="copy-btn px-6 py-3 bg-blue-600 text-white font-medium rounded-lg">
+                        Copy to Clipboard
+                    </button>
+                </div>
             </div>
         </div>
-        
-        <div id="emailOutput" class="hidden bg-white email-preview rounded-lg p-6">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Preview your email</h2>
-            
-            <div class="p-4 border border-gray-200 rounded mb-6 bg-gray-50">
-                <p class="font-medium mb-2 text-gray-700">To: <span id="toField"></span></p>
-                <p class="font-medium text-gray-700">Subject: Weekly Report <span class="date-display" id="subjectDates"></span></p>
+
+        <div id="pullBackSection" class="mt-12 hidden">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Pull Back Request Email Generator</h1>
+                <p class="text-gray-600">Fill in the details below to generate a Pull Back Request email</p>
             </div>
-            
-            <div class="prose max-w-none">
-                <p id="greetingLine">Hello,</p>
-                
-                <p>Attached is my weekly report for <span class="date-display" id="reportDates"></span>.</p>
-                
-                <p>Please let me know if you have any questions or need additional information.</p>
-                
-                <p>Best regards,</p>
-                <p><span id="userName">[Your Name]</span></p>
+            <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Project Code</label>
+                    <input type="text" id="pbProjectCode" placeholder="e.g., D176" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Selection</label>
+                    <select id="pbSelection" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="Both">DWG and BOM</option>
+                        <option value="DWG only">DWG only</option>
+                        <option value="BOM only">BOM only</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Requested Module List</label>
+                    <textarea id="pbModuleList" rows="2" placeholder="e.g., 4011-2123\n4011-2124" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">REV or NON REV</label>
+                    <select id="pbRevType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="NON REV">NON REV</option>
+                        <option value="REV">REV</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Reason / Remarks</label>
+                    <textarea id="pbReason" rows="2" placeholder="e.g., Update part number" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"></textarea>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Recipients</label>
+                    <input type="text" id="pbRecipients" placeholder="e.g., Mei/Ryn" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="flex justify-end">
+                    <button id="pbGenerateBtn" class="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Generate Email
+                    </button>
+                </div>
             </div>
-            
-            <div class="mt-6 flex justify-end">
-                <button id="copyBtn" class="copy-btn px-6 py-3 bg-blue-600 text-white font-medium rounded-lg">
-                    Copy to Clipboard
-                </button>
+            <div id="pbEmailOutput" class="hidden bg-white email-preview rounded-lg p-6">
+                <h2 class="text-xl font-bold text-gray-800 mb-4">Preview your email</h2>
+                <div class="p-4 border border-gray-200 rounded mb-6 bg-gray-50">
+                    <p class="font-medium mb-2 text-gray-700">To: <span id="pbToField"></span></p>
+                    <p class="font-medium text-gray-700">Subject: <span id="pbSubject"></span></p>
+                </div>
+                <div class="prose max-w-none">
+                    <p id="pbGreetingLine">Hi,</p>
+                    <p id="pbBody"></p>
+                    <p class="font-semibold mt-4">Remarks:</p>
+                    <ol id="pbRemarks" class="list-decimal ml-6"></ol>
+                </div>
+                <div class="mt-6 flex justify-end">
+                    <button id="pbCopyBtn" class="copy-btn px-6 py-3 bg-blue-600 text-white font-medium rounded-lg">
+                        Copy to Clipboard
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -170,6 +246,130 @@
                 });
             });
         });
+
+    // Pull Back Request Email Generator logic
+    document.addEventListener('DOMContentLoaded', function() {
+        const pbProjectCode = document.getElementById('pbProjectCode');
+        const pbSelection = document.getElementById('pbSelection');
+        const pbModuleList = document.getElementById('pbModuleList');
+        const pbRevType = document.getElementById('pbRevType');
+        const pbReason = document.getElementById('pbReason');
+        const pbRecipients = document.getElementById('pbRecipients');
+        const pbGenerateBtn = document.getElementById('pbGenerateBtn');
+        const pbEmailOutput = document.getElementById('pbEmailOutput');
+        const pbToField = document.getElementById('pbToField');
+        const pbSubject = document.getElementById('pbSubject');
+        const pbGreetingLine = document.getElementById('pbGreetingLine');
+        const pbBody = document.getElementById('pbBody');
+        const pbRemarks = document.getElementById('pbRemarks');
+        const pbCopyBtn = document.getElementById('pbCopyBtn');
+
+        pbGenerateBtn.addEventListener('click', function() {
+            const projectCode = pbProjectCode.value.trim() || '[Project Code]';
+            const selection = pbSelection.value;
+            const moduleList = pbModuleList.value.trim();
+            const revType = pbRevType.value;
+            const reason = pbReason.value.trim();
+            const recipients = pbRecipients.value.trim() || '[Recipient]';
+
+            // Subject
+            let subject = `${projectCode} : Pullback`;
+            if (selection === 'Both') {
+                subject += ' BOM and DWG';
+            } else if (selection === 'DWG only') {
+                subject += ' DWG';
+            } else if (selection === 'BOM only') {
+                subject += ' BOM';
+            }
+
+            pbToField.textContent = recipients;
+            pbSubject.textContent = subject;
+            pbGreetingLine.textContent = `Hi ${recipients},`;
+
+            // Body
+            let body = `I would like to Pullback the`;
+            if (selection === 'Both') {
+                body += ' DWG and BOM';
+            } else if (selection === 'DWG only') {
+                body += ' DWG only';
+            } else if (selection === 'BOM only') {
+                body += ' BOM only';
+            }
+            body += ` ${revType} for below :<br><br>`;
+
+            // Module list as bullet points
+            if (moduleList) {
+                const modules = moduleList.split(/\n|,/).map(m => m.trim()).filter(Boolean);
+                body += modules.map(m => `&bull; ${m}`).join('<br>');
+            } else {
+                body += '&bull; [Module List]';
+            }
+            pbBody.innerHTML = body;
+
+            // Remarks
+            pbRemarks.innerHTML = '';
+            if (reason) {
+                // Split remarks by line or by numbering
+                const remarks = reason.split(/\n|\r/).map(r => r.trim()).filter(Boolean);
+                remarks.forEach(r => {
+                    const li = document.createElement('li');
+                    li.textContent = r;
+                    pbRemarks.appendChild(li);
+                });
+            } else {
+                const li = document.createElement('li');
+                li.textContent = '[Remarks]';
+                pbRemarks.appendChild(li);
+            }
+
+            pbEmailOutput.classList.remove('hidden');
+        });
+
+        pbCopyBtn.addEventListener('click', function() {
+            // Build plain text email
+            const to = pbToField.textContent;
+            const subject = pbSubject.textContent;
+            const greeting = pbGreetingLine.textContent;
+            const body = pbBody.innerHTML.replace(/<br>/g, '\n').replace(/&bull;/g, '•').replace(/<[^>]+>/g, '');
+            let remarks = '';
+            pbRemarks.querySelectorAll('li').forEach((li, idx) => {
+                remarks += `${idx + 1}) ${li.textContent}\n`;
+            });
+            const emailContent = `To: ${to}\nSubject: ${subject}\n\n${greeting}\n\n${body}\n\nRemarks:\n${remarks}`;
+            navigator.clipboard.writeText(emailContent).then(function() {
+                const originalText = pbCopyBtn.textContent;
+                pbCopyBtn.textContent = 'Copied!';
+                pbCopyBtn.classList.remove('bg-blue-600');
+                pbCopyBtn.classList.add('bg-green-600');
+                setTimeout(function() {
+                    pbCopyBtn.textContent = originalText;
+                    pbCopyBtn.classList.remove('bg-green-600');
+                    pbCopyBtn.classList.add('bg-blue-600');
+                }, 2000);
+            }).catch(function(err) {
+                alert('Could not copy text. Please try again or copy manually.');
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Generator selector logic
+        const generatorSelector = document.getElementById('generatorSelector');
+        const weeklyReportSection = document.getElementById('weeklyReportSection');
+        const pullBackSection = document.getElementById('pullBackSection');
+        function updateGeneratorVisibility() {
+            if (generatorSelector.value === 'weekly') {
+                weeklyReportSection.classList.remove('hidden');
+                pullBackSection.classList.add('hidden');
+            } else {
+                weeklyReportSection.classList.add('hidden');
+                pullBackSection.classList.remove('hidden');
+            }
+        }
+        generatorSelector.addEventListener('change', updateGeneratorVisibility);
+        // Set initial state
+        updateGeneratorVisibility();
+    });
     </script>
 </body>
 </html>
