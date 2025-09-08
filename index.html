@@ -252,9 +252,7 @@
                                     `Subject: Weekly Report ${subjectDates.textContent}\n\n` +
                                     `${greetingLine.textContent}\n\n` +
                                     `Attached is my weekly report for ${reportDates.textContent}.\n\n` +
-                                    `Please let me know if you have any questions or need additional information.\n\n` +
-                                    `Best regards,\n` +
-                                    `${document.getElementById('userName').textContent}`;
+                                    `Please let me know if you have any questions or need additional information.\n\n`;
                 
                 // Copy to clipboard
                 navigator.clipboard.writeText(emailContent).then(function() {
@@ -441,3 +439,4 @@
     </script>
 </body>
 </html>
+
